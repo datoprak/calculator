@@ -37,11 +37,18 @@ const display = e => {
 
 const execute = e => {
   if (e.target.textContent === "=") {
-    secondInput = screen.textContent;
-    ans = operate(firstInput, secondInput, operand);
-    screen.textContent = ans;
-    operand = null;
-    screenText = null;
+    if (!firstInput) {
+      screenText = null;
+    } else {
+      secondInput = screen.textContent;
+      let ans = operate(firstInput, secondInput, operand);
+      let roundedAns = round(ans, 5);
+      screen.textContent = roundedAns;
+      operand = null;
+      screenText = null;
+      firstInput = null;
+      secondInput = null;
+    }
   } else {
     if (!firstInput) {
       firstInput = screen.textContent;
@@ -49,13 +56,19 @@ const execute = e => {
       screenText = null;
     } else {
       secondInput = screen.textContent;
-      ans = operate(firstInput, secondInput, operand);
-      screen.textContent = ans;
+      let ans = operate(firstInput, secondInput, operand);
+      let roundedAns = round(ans, 5);
+      screen.textContent = roundedAns;
       screenText = null;
-      firstInput = ans;
+      firstInput = roundedAns;
       operand = e.target.textContent;
     }
   }
+};
+
+const round = (value, precision) => {
+  const multiplier = Math.pow(10, precision);
+  return Math.round(value * multiplier) / multiplier;
 };
 
 numbers.forEach(number => {
