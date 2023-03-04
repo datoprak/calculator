@@ -5,6 +5,7 @@ const operands = document.querySelectorAll(".operand");
 const clearButton = document.querySelector(".clear-button");
 const floatButton = document.querySelector(".float");
 const backspaceButton = document.querySelector(".backspace-button");
+const body = document.querySelector("body");
 
 let firstInput;
 let operand;
@@ -15,7 +16,7 @@ const add = (a, b) => +a + +b;
 const subtract = (a, b) => +a - +b;
 const multiply = (a, b) => +a * +b;
 const divide = (a, b) => {
-  if (a === "0" || b === "0") {
+  if (b === "0") {
     return "ERROR";
   } else {
     return +a / +b;
@@ -30,22 +31,24 @@ const operate = (a, b, operand) => {
       return subtract(a, b);
     case "x":
       return multiply(a, b);
+    case "*":
+      return multiply(a, b);
     case "/":
       return divide(a, b);
   }
 };
 
 const display = e => {
-  if (screen.textContent === "0" || !screenText) {
-    screen.textContent = e.target.textContent;
+  if (!screenText) {
+    screen.textContent = e.target ? e.target.textContent : e;
   } else {
-    screen.textContent += e.target.textContent;
+    screen.textContent += e.target ? e.target.textContent : e;
   }
   screenText = screen.textContent;
 };
 
 const execute = e => {
-  if (e.target.textContent === "=") {
+  if (e.target ? e.target.textContent === "=" : e === "Enter") {
     if (!firstInput) {
       screenText = null;
     } else {
@@ -61,7 +64,7 @@ const execute = e => {
   } else {
     if (!firstInput) {
       firstInput = screen.textContent;
-      operand = e.target.textContent;
+      operand = e.target ? e.target.textContent : e;
       screenText = null;
     } else {
       secondInput = screen.textContent;
@@ -69,8 +72,8 @@ const execute = e => {
       let roundedAns = round(ans, 5);
       screen.textContent = roundedAns;
       screenText = null;
-      firstInput = roundedAns;
-      operand = e.target.textContent;
+      firstInput = roundedAns.toString();
+      operand = e.target ? e.target.textContent : e;
     }
   }
 };
@@ -110,6 +113,39 @@ const backspace = () => {
   }
 };
 
+const useKeyboard = e => {
+  if (
+    e.key === "0" ||
+    e.key === "1" ||
+    e.key === "2" ||
+    e.key === "3" ||
+    e.key === "4" ||
+    e.key === "5" ||
+    e.key === "6" ||
+    e.key === "7" ||
+    e.key === "8" ||
+    e.key === "9"
+  ) {
+    display(e.key);
+  } else if (
+    e.key === "+" ||
+    e.key === "-" ||
+    e.key === "*" ||
+    e.key === "/" ||
+    e.key === "Enter"
+  ) {
+    execute(e.key);
+  } else if (e.key === "Escape" || e.key === "Delete") {
+    clear();
+  } else if (e.key === "." || e.key === ",") {
+    addFloat();
+  } else if (e.key === "Backspace") {
+    backspace();
+  } else {
+    e.preventDefault();
+  }
+};
+
 numbers.forEach(number => {
   number.addEventListener("click", display);
 });
@@ -125,3 +161,5 @@ clearButton.addEventListener("click", clear);
 floatButton.addEventListener("click", addFloat);
 
 backspaceButton.addEventListener("click", backspace);
+
+body.addEventListener("keydown", useKeyboard);
