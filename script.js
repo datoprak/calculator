@@ -3,6 +3,8 @@ const screen = document.querySelector(".screen");
 const equalButton = document.querySelector(".equal");
 const operands = document.querySelectorAll(".operand");
 const clearButton = document.querySelector(".clear-button");
+const floatButton = document.querySelector(".float");
+const backspaceButton = document.querySelector(".backspace-button");
 
 let firstInput;
 let operand;
@@ -90,6 +92,24 @@ const clear = () => {
   screen.textContent = "0";
 };
 
+const addFloat = () => {
+  const point = [...screen.textContent].find(char => char === ".");
+  if (!point) {
+    screen.textContent += ".";
+  }
+};
+
+const backspace = () => {
+  if (screen.textContent.length === 1) {
+    screen.textContent = "0";
+  } else {
+    screen.textContent = screen.textContent.substring(
+      0,
+      screen.textContent.length - 1
+    );
+  }
+};
+
 numbers.forEach(number => {
   number.addEventListener("click", display);
 });
@@ -101,3 +121,7 @@ operands.forEach(operand => {
 equalButton.addEventListener("click", execute);
 
 clearButton.addEventListener("click", clear);
+
+floatButton.addEventListener("click", addFloat);
+
+backspaceButton.addEventListener("click", backspace);
