@@ -1,7 +1,8 @@
 const numbers = document.querySelectorAll(".number");
 const screen = document.querySelector(".screen");
-const equal = document.querySelector(".equal");
+const equalButton = document.querySelector(".equal");
 const operands = document.querySelectorAll(".operand");
+const clearButton = document.querySelector(".clear-button");
 
 let firstInput;
 let operand;
@@ -11,7 +12,13 @@ let screenText;
 const add = (a, b) => +a + +b;
 const subtract = (a, b) => +a - +b;
 const multiply = (a, b) => +a * +b;
-const divide = (a, b) => +a / +b;
+const divide = (a, b) => {
+  if (a === "0" || b === "0") {
+    return "ERROR";
+  } else {
+    return +a / +b;
+  }
+};
 
 const operate = (a, b, operand) => {
   switch (operand) {
@@ -67,8 +74,20 @@ const execute = e => {
 };
 
 const round = (value, precision) => {
-  const multiplier = Math.pow(10, precision);
-  return Math.round(value * multiplier) / multiplier;
+  if (typeof value === "number") {
+    const multiplier = Math.pow(10, precision);
+    return Math.round(value * multiplier) / multiplier;
+  } else {
+    return "ERROR";
+  }
+};
+
+const clear = () => {
+  firstInput = null;
+  operand = null;
+  secondInput = null;
+  screenText = null;
+  screen.textContent = "0";
 };
 
 numbers.forEach(number => {
@@ -79,4 +98,6 @@ operands.forEach(operand => {
   operand.addEventListener("click", execute);
 });
 
-equal.addEventListener("click", execute);
+equalButton.addEventListener("click", execute);
+
+clearButton.addEventListener("click", clear);
