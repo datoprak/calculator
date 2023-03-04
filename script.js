@@ -1,3 +1,6 @@
+const numbers = document.querySelectorAll(".number");
+const screen = document.querySelector(".screen");
+
 const add = (a, b) => a + b;
 const subtract = (a, b) => a - b;
 const multiply = (a, b) => a * b;
@@ -19,3 +22,15 @@ const operate = (a, b, operand) => {
       break;
   }
 };
+
+const display = e => {
+  if (screen.textContent === "0") {
+    screen.textContent = e.target.textContent;
+  } else {
+    screen.textContent += e.target.textContent;
+  }
+};
+
+numbers.forEach(number => {
+  number.addEventListener("click", display);
+});
