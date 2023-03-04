@@ -35,18 +35,27 @@ const display = e => {
   screenText = screen.textContent;
 };
 
-const getInfo = e => {
-  firstInput = screenText;
-  operand = e.target.textContent;
-  screenText = null;
-};
-
 const execute = e => {
-  secondInput = screen.textContent;
-  ans = operate(firstInput, secondInput, operand);
-  screen.textContent = ans;
-  operand = null;
-  screenText = null;
+  if (e.target.textContent === "=") {
+    secondInput = screen.textContent;
+    ans = operate(firstInput, secondInput, operand);
+    screen.textContent = ans;
+    operand = null;
+    screenText = null;
+  } else {
+    if (!firstInput) {
+      firstInput = screen.textContent;
+      operand = e.target.textContent;
+      screenText = null;
+    } else {
+      secondInput = screen.textContent;
+      ans = operate(firstInput, secondInput, operand);
+      screen.textContent = ans;
+      screenText = null;
+      firstInput = ans;
+      operand = e.target.textContent;
+    }
+  }
 };
 
 numbers.forEach(number => {
@@ -54,7 +63,7 @@ numbers.forEach(number => {
 });
 
 operands.forEach(operand => {
-  operand.addEventListener("click", getInfo);
+  operand.addEventListener("click", execute);
 });
 
 equal.addEventListener("click", execute);
