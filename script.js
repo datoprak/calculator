@@ -39,7 +39,20 @@ const operate = (a, b, operand) => {
 };
 
 const display = e => {
-  if (!screenText) {
+  // if (screen.textContent === "0" || !screenText) {
+  //   screen.textContent = e.target ? e.target.textContent : e;
+  // } else if (screen.textContent.length < 17) {
+  //   screen.textContent += e.target ? e.target.textContent : e;
+  // } else {
+  //   let defaultColor = screen.style.color;
+  //   screen.style.color = "#df2e38";
+  //   setTimeout(() => {
+  //     screen.style.color = defaultColor;
+  //   }, 100);
+  // }
+  // screenText = screen.textContent;
+
+  if (screen.textContent === "0" || !screenText) {
     screen.textContent = e.target ? e.target.textContent : e;
   } else {
     screen.textContent += e.target ? e.target.textContent : e;
@@ -54,8 +67,8 @@ const execute = e => {
     } else {
       secondInput = screen.textContent;
       let ans = operate(firstInput, secondInput, operand);
-      let roundedAns = round(ans, 5);
-      screen.textContent = roundedAns;
+      let roundedAns = round(ans, 15);
+      screen.textContent = ans;
       operand = null;
       screenText = null;
       firstInput = null;
@@ -69,10 +82,10 @@ const execute = e => {
     } else {
       secondInput = screen.textContent;
       let ans = operate(firstInput, secondInput, operand);
-      let roundedAns = round(ans, 5);
-      screen.textContent = roundedAns;
+      let roundedAns = round(ans, 15);
+      screen.textContent = ans;
       screenText = null;
-      firstInput = roundedAns.toString();
+      firstInput = ans.toString();
       operand = e.target ? e.target.textContent : e;
     }
   }
@@ -99,12 +112,14 @@ const addFloat = () => {
   const point = [...screen.textContent].find(char => char === ".");
   if (!point) {
     screen.textContent += ".";
+    screenText = ".";
   }
 };
 
 const backspace = () => {
   if (screen.textContent.length === 1) {
     screen.textContent = "0";
+    screenText = null;
   } else {
     screen.textContent = screen.textContent.substring(
       0,
