@@ -20,6 +20,7 @@ body {
   font-size: 32px;
   font-weight: 700;
   background-color: white;
+  min-height: 40px;
   word-wrap: break-word;
   word-break: break-all;
 }

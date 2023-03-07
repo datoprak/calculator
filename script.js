@@ -35,24 +35,13 @@ const operate = (a, b, operand) => {
       return multiply(a, b);
     case "/":
       return divide(a, b);
+    case "÷":
+      return divide(a, b);
   }
 };
 
 const display = e => {
-  // if (screen.textContent === "0" || !screenText) {
-  //   screen.textContent = e.target ? e.target.textContent : e;
-  // } else if (screen.textContent.length < 17) {
-  //   screen.textContent += e.target ? e.target.textContent : e;
-  // } else {
-  //   let defaultColor = screen.style.color;
-  //   screen.style.color = "#df2e38";
-  //   setTimeout(() => {
-  //     screen.style.color = defaultColor;
-  //   }, 100);
-  // }
-  // screenText = screen.textContent;
-
-  if (screen.textContent === "0" || !screenText) {
+  if (screen.textContent === "" || !screenText) {
     screen.textContent = e.target ? e.target.textContent : e;
   } else {
     screen.textContent += e.target ? e.target.textContent : e;
@@ -68,7 +57,7 @@ const execute = e => {
       secondInput = screen.textContent;
       let ans = operate(firstInput, secondInput, operand);
       let roundedAns = round(ans, 15);
-      screen.textContent = ans;
+      screen.textContent = roundedAns;
       operand = null;
       screenText = null;
       firstInput = null;
@@ -83,9 +72,9 @@ const execute = e => {
       secondInput = screen.textContent;
       let ans = operate(firstInput, secondInput, operand);
       let roundedAns = round(ans, 15);
-      screen.textContent = ans;
+      screen.textContent = roundedAns;
       screenText = null;
-      firstInput = ans.toString();
+      firstInput = roundedAns.toString();
       operand = e.target ? e.target.textContent : e;
     }
   }
@@ -105,20 +94,20 @@ const clear = () => {
   operand = null;
   secondInput = null;
   screenText = null;
-  screen.textContent = "0";
+  screen.textContent = "";
 };
 
 const addFloat = () => {
   const point = [...screen.textContent].find(char => char === ".");
   if (!point) {
-    screen.textContent += ".";
-    screenText = ".";
+    screen.textContent += "0.";
+    screenText = "0.";
   }
 };
 
 const backspace = () => {
   if (screen.textContent.length === 1) {
-    screen.textContent = "0";
+    screen.textContent = "";
     screenText = null;
   } else {
     screen.textContent = screen.textContent.substring(
@@ -149,6 +138,7 @@ const useKeyboard = e => {
     e.key === "/" ||
     e.key === "Enter"
   ) {
+    e.preventDefault();
     execute(e.key);
   } else if (e.key === "Escape" || e.key === "Delete") {
     clear();
